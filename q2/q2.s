@@ -4,7 +4,7 @@
 
 .extern printf
 .extern malloc
-.extern atoll
+.extern atoi
 
 .global main
 
@@ -36,7 +36,7 @@ traverse:
     beq t0, x0, allocate_result
     ld a0, 0(s4)
     sd t0, 0(sp)      
-    call atoll
+    call atoi
     sd a0, 0(s5)
     ld t0, 0(sp) 
     addi s4, s4, 8
