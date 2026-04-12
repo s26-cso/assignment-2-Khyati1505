@@ -1,9 +1,10 @@
 .data
     output_format: .asciz "%lld "
+    new_line: .asciz "\n"
 
 .extern printf
 .extern malloc
-.global atoi
+.extern atoll
 
 .global main
 
@@ -12,22 +13,22 @@
 main:
     addi sp, sp, -64      
     sd ra, 56(sp)
-    sd s5, 48(sp)
-    sd s4, 40(sp)
-    sd s3, 32(sp)
-    sd s2, 24(sp)
-    sd s1, 16(sp)
-    sd s0, 8(sp)
+    sd s5, 48(sp)  #array ptr for traverse function
+    sd s4, 40(sp)  #argv ptr
+    sd s3, 32(sp)  #stack ptr
+    sd s2, 24(sp)  #result ptr
+    sd s1, 16(sp)  #array ptr
+    sd s0, 8(sp)   #array len
 
     addi a0, a0, -1
     mv s0, a0  #array len
-    addi a1, a1, 1
+    addi a1, a1, 8
     mv s4, a1 #argv ptr
     mv a0, s0
     slli a0, a0, 3
     call malloc
     mv s1, a0 #array ptr
-    mv s5, s1
+    mv s5, s1 #for traverse function
     mv t0, s0 #array len
     mv t2, s0 #array len
 
@@ -35,9 +36,9 @@ traverse:
     beq t0, x0, allocate_result
     ld a0, 0(s4)
     sd t0, 0(sp)      
-    call atoi
-    ld t0, 0(sp)      
+    call atoll
     sd a0, 0(s5)
+    ld t0, 0(sp) 
     addi s4, s4, 8
     addi s5, s5, 8
     addi t0, t0, -1
@@ -110,6 +111,9 @@ print:
     j print
 
 end:
+    la a0, new_line
+    call printf
+    li a0, 0
     ld ra, 56(sp)
     ld s5, 48(sp)
     ld s4, 40(sp)
