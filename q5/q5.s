@@ -1,8 +1,8 @@
 .data
-    filename:   .asciz "input.txt"
-    mode_r:     .asciz "r"
-    yes_str:    .asciz "Yes\n"
-    no_str:     .asciz "No\n"
+    filename: .asciz "input.txt"
+    mode_r: .asciz "r"
+    yes: .asciz "Yes\n"
+    no: .asciz "No\n"
 
 .text
 .global main
@@ -67,14 +67,14 @@ loop:
 print_yes:
     mv a0, s0
     call fclose
-    la a0, yes_str
+    la a0, yes
     call printf
     j end
 
 print_no:
     mv a0, s0
     call fclose
-    la a0, no_str
+    la a0, no
     call printf
 
 end:
